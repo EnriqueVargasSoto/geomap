@@ -1,0 +1,120 @@
+<div id="modal-pedido" class="box box-info direct-chat">
+
+          <div class="box-header with-border">
+              <h3 class="box-title">Latest Orders</h3>
+
+              <div class="box-tools pull-right">
+                  <span data-toggle="tooltip" title="" class="badge bg-yellow" data-original-title="3 New Messages">3</span>
+                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-widget="chat-pane-toggle" data-original-title="Contacts">
+                      <i class="fa fa-comments"></i></button>
+                  <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                  </button>
+              </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+              <div class="row datos">
+                  <div class="col-md-6"><b>Ruc: </b><span id="modal-ruc">15851914</span></div>
+                  <div class="col-md-6"><b>Modulo: </b><span id="modal-modulo">15851914</span></div>
+                  <div class="col-md-6"><b>Correo: </b><span id="modal-correo"></span></div>
+                  <div class="col-md-6"><b>Dirección: </b><span id="modal-correo">Pje. lino 48</span></div>
+              </div>
+              <div class="nav-tabs-custom">
+                  <div class="direct-chat-contacts">
+                      <ul class="contacts-list">
+                          <li class="">
+                              <a href="#revenue-chart" data-toggle="tab" aria-expanded="false">
+                                  <div class="contacts-list-info">
+                                      <span class="contacts-list-name"> Count Dracula <small class="contacts-list-date pull-right">2/28/2015</small></span>
+                                      <span class="contacts-list-msg">How have you been? I was...</span>
+                                  </div>
+                              </a>
+                          </li>
+                          <li class=""><a href="#revenue-chart2" data-toggle="tab" aria-expanded="false">Area</a></li>
+                      </ul>
+                  </div>
+                  <div class="tab-content no-padding">
+                      <div class="tab-pane" id="revenue-chart2">
+                          <div class="table-responsive">
+                              <table class="table table-striped">
+                                  <thead>
+                                  <tr>
+                                      <th>Qty</th>
+                                      <th>Product</th>
+                                      <th>Serial #</th>
+                                      <th>Description</th>
+                                      <th>Subtotal</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  <tr>
+                                      <td>1</td>
+                                      <td>Call of Duty</td>
+                                      <td>455-981-221</td>
+                                      <td>El snort testosterone trophy driving gloves handsome</td>
+                                      <td>$64.50</td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                      <div class="tab-pane active" id="revenue-chart">
+                          <div class="table-responsive">
+                              <table class="table table-striped">
+                                  <thead>
+                                  <tr>
+                                      <th>Qty</th>
+                                      <th>Product</th>
+                                      <th>Serial #</th>
+                                      <th>Description</th>
+                                      <th>Subtotal</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  <tr> <td>1</td> <td>Call of Duty</td> <td>455-981-221</td> <td>El snort testosterone trophy driving gloves handsome</td> <td>$64.50</td> </tr>
+                                  <tr> <td>1</td> <td>Call of Duty</td> <td>455-981-221</td> <td>El snort testosterone trophy driving gloves handsome</td> <td>$64.50</td> </tr>
+                                  <tr> <td>1</td> <td>Call of Duty</td> <td>455-981-221</td> <td>El snort testosterone trophy driving gloves handsome</td> <td>$64.50</td> </tr>
+                                  <tr> <td>1</td> <td>Call of Duty</td> <td>455-981-221</td> <td>El snort testosterone trophy driving gloves handsome</td> <td>$64.50</td> </tr>
+                                  <tr> <td>1</td> <td>Call of Duty</td> <td>455-981-221</td> <td>El snort testosterone trophy driving gloves handsome</td> <td>$64.50</td> </tr>
+                                  <tr> <td>1</td> <td>Call of Duty</td> <td>455-981-221</td> <td>El snort testosterone trophy driving gloves handsome</td> <td>$64.50</td> </tr>
+                                  <tr> <td>1</td> <td>Call of Duty</td> <td>455-981-221</td> <td>El snort testosterone trophy driving gloves handsome</td> <td>$64.50</td> </tr>
+                                  <tr> <td>1</td> <td>Call of Duty</td> <td>455-981-221</td> <td>El snort testosterone trophy driving gloves handsome</td> <td>$64.50</td> </tr>
+
+                                  <tr>
+                                      <td>1</td>
+                                      <td>Need for Speed IV</td>
+                                      <td>247-925-726</td>
+                                      <td>Wes Anderson umami biodiesel</td>
+                                      <td>$50.00</td>
+                                  </tr>
+                                  <tr>
+                                      <td>1</td>
+                                      <td>Monsters DVD</td>
+                                      <td>735-845-642</td>
+                                      <td>Terry Richardson helvetica tousled street art master</td>
+                                      <td>$10.70</td>
+                                  </tr>
+                                  <tr>
+                                      <td>1</td>
+                                      <td>Grown Ups Blue Ray</td>
+                                      <td>422-568-642</td>
+                                      <td>Tousled lomo letterpress</td>
+                                      <td>$25.99</td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix">
+              <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+              <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+          </div>
+          <!-- /.box-footer -->
+      </div>

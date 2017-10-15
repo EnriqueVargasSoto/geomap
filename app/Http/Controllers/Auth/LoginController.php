@@ -48,9 +48,7 @@ class LoginController extends Controller
         if ($this->auth->attempt($request->only('usuario', 'clave'))) {
             if(isset($request->next) ){
                 $url = '/';
-            }else if(isset($request->page)&& $request->page != null  ){
-                $url = 'checkout/billing';
-            } else if ((trim($request->input('back'), '/') == trim(url('/'), '/')) ||
+            }else if ((trim($request->input('back'), '/') == trim(url('/'), '/')) ||
                 (trim($request->input('back'), '/') == trim(url('/login'), '/')) ) {
                 $url = '/';
             } else {

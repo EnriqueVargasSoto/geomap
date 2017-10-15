@@ -41,7 +41,7 @@
               <div class="form-group">
                 <p>Sucursal</p>
                 <select id="sucursales" class="form-control select2">
-				  <option value="0">...</option> 
+				  <option value="x">...</option>
                 </select>
               </div>  
             </label> 
