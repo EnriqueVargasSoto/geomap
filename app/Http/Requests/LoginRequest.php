@@ -25,8 +25,9 @@ class LoginRequest extends FormRequest
     {
         return [
             'usuario'       => 'required|string',
+			'empresa'     => 'min:3|max:15',
+			'sucursal'    => 'string|min:1|max:15',
             'clave'         => 'required|min:3|max:32',
         ];
     }
- 
 }

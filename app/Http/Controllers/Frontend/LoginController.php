@@ -13,6 +13,6 @@ use App\Http\Requests\LoginRequest;
 class LoginController extends Controller {
 	
 	protected function index(){	  
-		return view('frontend.login', [ 'login'   => new LoginRequest ]);
+		return view('login', [ 'login'   => new LoginRequest ]);
 	}
 }

@@ -1,0 +1,74 @@
+
+		.bg-white{
+			background-color: white;
+			color: black;
+		}
+		table.dataTable thead .bg-white th{
+			padding: 0px;
+		}
+		.col-lg-3 .form-buttons{
+            padding-top: 0px;
+        }
+        .form-group label{
+            display: block;
+        } 
+		li.active a {
+			font-weight: bold;
+		}
+        table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}
+        div.DTFC_Blocker{background-color:white}
+        div.DTFC_LeftWrapper table.dataTable,div.DTFC_RightWrapper table.dataTable{margin-bottom:0;z-index:2}
+        div.DTFC_LeftWrapper table.dataTable.no-footer,div.DTFC_RightWrapper table.dataTable.no-footer{border-bottom:none}
+        
+        @media (min-width: 1200px){
+            .modal-dialog{
+                width: 70%;
+            }
+            .col-lg-3 .form-buttons{
+                padding-top: 24px;
+            }
+        }
+		
+		#tableVendedores.dataTable.hover tbody tr:hover,td.highlight-blue,.bg-light-blue-footer{
+			background-color: #d2e5ef  !important;
+		}
+		#tablePreventaVendedores.dataTable.hover tbody tr:hover,td.highlight-purple{
+			background-color: #b7aace  !important;
+		}
+		#tableDespachoVendedores.dataTable.hover tbody tr:hover,td.highlight-cyal{
+			background-color: #aff1f1  !important;
+		}
+		#listaPedidosTable.dataTable.hover tbody tr:hover, td.highlight-green,.bg-green-footer{
+			background-color: #d4efd2  !important;
+		}
+		#tblavanceVentas.dataTable.hover tbody tr:hover,td.highlight-blue,.bg-light-blue-footer{
+			background-color: #d2e5ef  !important;
+		}
+		.button.close {   
+			font-size: 30px  !important;
+		}
+		th{
+			/*text-align: center;*/
+		}
+		.alinear_derecha{
+			text-align: right;
+		}
+		.alinear_derecha_anchopor{
+			text-align: right;
+			width: 150px;
+		}
+		.alinear_centro{
+			text-align: center;
+		}
+
+.contenido_scroll_ancho{
+	width: 100%;
+	overflow-y:scroll;
+	overflow-x: scroll;
+	border:1px solid #ddd
+	padding:0px;
+}
+
+.style_pers>tbody>tr:nth-of-type(odd) {
+    background-color: #f7f5f5;
+}

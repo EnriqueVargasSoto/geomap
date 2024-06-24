@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'custom',
         'passwords' => 'users',
     ],
 
@@ -38,13 +38,18 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'supervisor',
+            'provider' => 'users',
         ],
 
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
         ],
+
+        'custom' => [
+            'driver' => 'session',
+            'provider' => 'custom',
+        ]
     ],
 
     /*
@@ -68,11 +73,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
-        ], 
-		'supervisor' => [
-            'driver' => 'customauth',
-            'model' => App\Models\Supervisor::class,
-        ], 
+        ],
+        'custom' => [
+            'driver' => 'custom',
+            'model' => App\Models\Usuario::class,
+        ]
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

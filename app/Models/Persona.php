@@ -17,8 +17,8 @@ class Persona extends Model
 
 
     public $fillable = [ 'nombre' ]; 
-	
-	protected $hidden = array('idEmpresa', 'cargo', 'idUsuario', 'serie', 'idAlmacen', 'modoVenta', 'estado');
+	protected $casts = [ 'idPersona' => 'string' ];
+	protected $hidden = array('idEmpresa','idSucursal', 'cargo', 'idUsuario');
 	
 	/**
      * Get the Persona's nombre.

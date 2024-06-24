@@ -1,30 +1,36 @@
 @extends('layouts.frontend.master')
 @section('style')
+    <!-- iCheck for checkboxes and radio inputs -->
+   
+    <link href="{{ url('/') }}/plugins/iCheck/square/green.css" rel="stylesheet">
+	<!-- Select2 -->
+    <!--link rel="stylesheet" href="bower_components/select2/css/select2.min.css"-->
     <style>
-        overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /*.ir-arriba{
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            font-size: 20px;
+            display: none;
+            padding: 5px;
+            z-index: 9999999999;
+        }*/
+        footer {
+            display: none !important;
+        }
+        
+        .label-checkbox{
+            margin-left: 8px;
+        }
+        #content-map { 
             width: 100%;
-            height: 100%;
-            z-index: 9999;
-            background: rgba(255,255,255,0.7);
-            border-radius: 3px;
-        }
-        .overlay>.fa {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-left: -15px;
-            margin-top: -15px;
-            color: #000;
-            font-size: 30px;
-        }
-        #mapa, #content-map {
-            height: 100%;
+		}
+        #mapa {
+            height: 20%;
             width: 100%;
             margin-left: 0px !important
         }
+			 
         #legend {
             padding: 10px;
             margin: 10px;
@@ -36,6 +42,10 @@
             margin-right: 48px;
             display:none;
         }
+        #rutas:focus {
+            -webkit-box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 5px rgba(102,175,233,.6);
+            box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 5px rgba(102,175,233,.6);
+        }
         .show {
             position: relative;
         }
@@ -45,6 +55,9 @@
         #legend img {
             vertical-align: middle;
         }
+		.bar-default{
+			 background-color: #747171 !important;
+		}
         .label-G{
             background-color: #00a65a !important;
         }
@@ -53,6 +66,18 @@
         }
         .label-A{
             background-color: #dc2e4e !important;
+        }	
+		.text-G{
+            color: #00a65a !important;
+        }
+        .text-F{
+            color: #b12edc !important;
+        }
+        .text-A{
+            color: #dc2e4e !important;
+        }		
+        .modal-title{
+            text-align: center;
         }
         div .collapsed-box{
             height: auto !important;
@@ -60,6 +85,14 @@
         #sucursales .select2-results__option[aria-selected=true] {
             display: none;
         }
+		.labels_primary {
+			background-color: white;
+			font-size: 11px;
+			font-weight: bold;
+			text-align: center;
+			border: 1px solid #efede2;
+			white-space: nowrap;
+		}
         .ui-draggable{
             cursor: pointer; cursor: hand;
         }
@@ -96,17 +129,7 @@
             margin-bottom: 10px;
             text-transform: capitalize;
         }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            text-transform: capitalize;
-        }
-        i.fa.fa-calendar:hover {
-            color: green;
-            border-color: red;
-        }
-        .input-group .input-group-addon:hover {
-            border-color: green;
-            box-shadow: 0 1px 2px 0 #00a65a, 0 1px 2px 0 #00a65a;
-        }
+      
         .contacts-list-img{
             padding-top: 6px;
             text-align: center
@@ -116,74 +139,270 @@
         }
         #content-cliente .box{
             display: none;
-            margin-left: 15px;
-            margin-top: 15px;
+        }
+        .box.direct-chat.show.ui-draggable .box-title {
+            padding-right: 96px;
+        }
+       
+        .text-white{
+            color: white !important;
+        }
+        .tab-content a.pull-right i.fa.fa-fw.pull-right {
+            margin-top: 2px;
         }
 
-        /*Desktops and Laptops*/
+        #floating-button{
+            width: 50px;
+            z-index: 9999999999;
+            height: 50px;
+            border-radius: 50%;
+            background: #00a65a;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: none;
+            cursor: pointer;
+            box-shadow: 0px 2px 5px #666;
+        }
+
+        .plus{
+            color: white;
+            position: absolute;
+            top: 0;
+            display: block;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            line-height: 50px;
+            font-size: 16px;
+            font-weight: 300;
+            animation: plus-out 0.3s;
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 768px){
+            .control-sidebar {
+                padding-top: 50px;
+            }
+        }
+
+        /*Desktops and Laptops */
         @media only screen and (min-width: 1224px) {
+            footer {
+                display: block !important;
+            }
+
+            #floating-button{
+                display: none !important;
+            }
             #content-cliente{
                 position: absolute;
                 z-index: 9999;
+                max-width: 47%;
+                /*height: 70%;*/
             }
             #legend{
-                display: block;
+                /*display: block; mostrar en tab borrar esto*/
+            }
+            #content-cliente .box.collapsed-box {
+                padding-bottom: 0px;
+            }
+            #content-cliente .box{
+                display: none;
+                margin-left: 15px;
+                margin-top: 15px;
+                width: auto !important;
+                height: auto !important;
+                overflow: auto;
+                padding-bottom: 10px;
+                /* padding-bottom: 50px;*/
+            }
+            .box-body::-webkit-scrollbar {
+                display: none;
+            }
+
+        }
+		.progress.progress-xxs{
+			height: 18px;
+			background: #3a4b53;
+		}
+		.progress-label{
+			font-weight: 400;
+		}
+        .content.map{
+            padding: 0px !important;
+        }
+
+        /** Desktops and Laptops height min **/
+        @media only screen and (min-width: 1224px) and (min-height: 620px) {
+            #content-cliente .box {
+                max-height: 560px;
             }
         }
+
+        /** Desktops and Laptops height high **/
+        @media only screen and (min-width: 1224px) and (min-height:760px){
+            #content-cliente .box {
+                max-height: 760px;
+            }
+        }
+
+        .table>tbody>tr.bonificacion>td {
+            background-color: rgba(81, 255, 60, 0.47);
+        }
+       
+        .tab-pane table {
+            margin-bottom: 0px;
+        }
+		.dashboard{
+			background: white;
+		}
+		.border-right{
+			border-right: 1px solid #f4f4f4;
+		}
+		.dashboard .description-text {
+			font-size: 12px;
+		}
+		.row-dashboard{
+			display: block;
+			padding: 0px 15px;
+			padding-bottom: 1px;
+		}
+		
     </style>
 @stop
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div id="content-map">
-        <div id="overlay" class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
-        <div id="content-cliente">
+
+<div class="content-wrapper">
+	<section class="content map">
+		<div class="row dashboard">
+			<div class="col-sm-2 col-xs-3 border-right">
+				<div class="description-block">
+					<span class="description-percentage text-G" id="numero-paquete-label"><i class="fa fa-caret-up"><i></i></i></span>
+					<h5 class="description-header" id="numero-paquete">0</h5>
+					<span class="description-text">Numero de Paquetes</span>
+				</div>
+			</div>
+			<div class="col-sm-1 col-xs-3 border-right">
+				<div class="description-block">
+					<span class="description-percentage text-G" id="importe-total-label"><i class="fa fa-caret-up"><i></i></i></span>
+					<h5 class="description-header" id="importe-total">0</h5>
+					<span class="description-text">Importe Total</span>
+				</div>
+			</div>
+			<div class="col-sm-2 col-xs-3 border-right">
+				<div class="description-block">
+					<span class="description-percentage text-G" id="pedido-generado-label">0%</span>
+					<h5 class="description-header" id="pedido-generado">0</h5>
+					<span class="description-text">Pedidos generados</span>
+				</div>
+			</div>
+			<div class="col-sm-2 col-xs-3 border-right">
+				<div class="description-block">
+					<span class="description-percentage text-F" id="facturados-label">0%</span>
+					<h5 class="description-header" id="facturados">0</h5>
+					<span class="description-text">Pedidos facturados</span>
+				</div>
+			</div>
+			<div class="col-sm-1 col-xs-4 border-right">
+				<div class="description-block">
+					<span class="description-percentage text-A" id="no-venta-label">0%</span>
+					<h5 class="description-header" id="no-venta">0</h5>
+					<span class="description-text">Motivo no compra</span>
+				</div>
+			</div>
+			<div class="col-sm-2 col-xs-4 border-right">
+				<div class="description-block">
+					<span class="description-percentage text-blue" id="visitados-label">0%</span>
+					<h5 class="description-header" id="visitados">0</h5>
+					<span class="description-text">Clientes visitados</span>
+				</div>
+			</div>
+			<div class="col-sm-2 col-xs-4 border-right">
+				<div class="description-block">
+					<span class="description-percentage text-default" id="no-visitados-label">0%</span>
+					<h5 class="description-header" id="no-visitados">0</h5>
+					<span class="description-text">Clientes no visitados</span>
+				</div>
+			</div>
+		</div>			
+			
+        <!-- Content Wrapper. Contains page content -->
+        <div id="content-map">
+            <div id="overlay" class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
+            <div id="content-cliente"></div>			
+			
+			<div class="content-wrapper" id= "mapa"></div>						
         </div>
-        <div class="content-wrapper" id= "mapa"></div>
-    </div>
-    <div id="legend"></div>
-    <!-- /.content-wrapper -->
+
+        <div id="floating-button" class="ir-arriba">
+            <p id="button-down" class="plus"><i class="fa fa-fw fa-chevron-down"></i></p>
+            <p id="button-up" class="plus hidden"><i class="fa fa-fw fa-chevron-up"></i></p>
+        </div>
+        <div class="modal fade" id="modal-logout" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">¿Esta seguro que desea cerrar su sesión?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                        <button id="logout-mobile" type="button" class="btn btn-primary">Salir</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </section>
+</div>
 @stop
 @section('script')
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8tDfygL5CFzsEOfJpEhPYdDFzma-5P8c"></script>
-    <!-- InputMask -->
-    <script src="plugins/input-mask/jquery.inputmask.js"></script>
-    <script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-    <!-- datepicker -->
-    <script src="bower_components/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-    <script src="bower_components/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js"></script>
-    <!-- Select2 -->
-    <script src="bower_components/select2/js/select2.min.js"></script>
-    <script src="bower_components/select2/js/i18n/es.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQaS-JzwKRanBFgbQVquqQuuauSHO2zkg"></script>     
+	<script src="{{ url('/') }}/js/markerwithlabel.js"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="{{ url('/') }}/plugins/iCheck/icheck.min.js"></script>
+	<!-- Select2 -->
+    <!--script src="bower_components/select2/js/select2.min.js"></script>
+    <script src="bower_components/select2/js/i18n/es.js"></script-->
     <script>
-        var map, markerCluster, bounds, util;
+        var map, markerClusterClientes, markerClusterPedidos, bounds, iconos;
         var listaClientes = [];
-        var clientesMarkers = [];
-        var iconMapBase = 'images/map/';
-        var timerPedidos = null;
-        var fechaDefecto = '';
+        var datosClientes = []; 
+        var listaMarkersPedidos = []; 
+		var listaMarkersClientes = []; 
+        var iconMapBase = "{{ url('/') }}/images/map/";
+        var timerPedidos = null;  
         var esquema;
-
-        $(document).ready(function(){
-            var centro = {lat: -11.971990, lng:  -77.062177};
-            var legenda = document.getElementById('legend');
-
-            var htmlNoPedido = '<div class="col-xs-12 "><h5>[cliente]</h5><b>Ruc: </b>[ruc]<br><b>Correo: </b>[correo]<br><b>Dirección: </b>[direccion]</div>';
-            var htmlPedido = '<div class="col-xs-12 contenido"><h5>[cliente]</h5><p><b>Ruc: </b>[ruc]<br><b>Pedido N°: </b>[pedido]<br><b>Total: </b>[total]</p><p><b>Correo: </b>[correo]<br> <b>Factura: </b>[factura]<br>'+
-                '<b>Hora: </b>[hora]</p><span><b>Vendedor : </b>[vendedor]</span><br><span><b>Dirección: </b>[direccion]</span></div>'+
-                '<div id="[pedido]-table" class="col-xs-12 table-responsive table-content"><div id="[pedido]-overlay" class="overlay"><i class="fa fa-refresh fa-spin"></i></div></div>';
-            var htmlNoVenta = '<div class="col-xs-12 contenido"><h5>[cliente]</h5><p><b>Ruc: </b>[ruc]<br><b>Pedido N°: </b>[pedido]<br><b>Total: </b>[total]</p><p><b>Correo: </b>[correo]<br> <b>Factura: </b>[factura]<br>'+
-                '<b>Hora: </b>[hora]</p><span><b>Vendedor : </b>[vendedor]</span><br><span><b>Motivo : </b>[motivo]</span><br><span><b>Dirección: </b>[direccion]</span></div>';
-
+        var totalPedidos = [];
+		var zonaFiltro, rutaFiltro, fechaPreventaFiltro, vendedorFiltro, nombreVendedor;
+		var actualPolyLine;
+		
+		$(document).ready(function(){
+			var centro = {lat: -11.971990, lng:  -77.062177}; //Sucursal
+			zonaFiltro = "{{ isset($zona)? $zona : 'all' }}";
+			rutaFiltro = "{{ isset($ruta)? $ruta : 'all' }}";
+			fechaPreventaFiltro = "{{ isset($fecha) ? $fecha :  Auth::user()->fecha }}";
+			vendedorFiltro = "{{ isset($vendedor) ? $vendedor : 'x' }}";
+			nombreVendedor = "{{$nombreVendedor}}";
+            $('#zonas').val("{{ $nombreZona }}"); 
+            $('#rutas').val("{{ $nombreRuta }}"); 
+            $('#vendedores').val(nombreVendedor);
             esquema = {
-                P: '<div id="modal-[cliente]" class="box direct-chat">'+
-                '<div class="box-header with-border">'+
+                P: '<div id="modal-_cliente_" class="box direct-chat">'+
+                '<div id="box-header-_cliente_" class="box-header">'+
                 '<h3 class="box-title">[nombre]</h3>'+
                 '<div class="box-tools pull-right">'+
-                '<span id="cantidad-[cliente]" data-toggle="tooltip" class="badge bg-yellow">[cantidad]</span>'+
-                '<button id="collapse-[cliente]" onclick="collapseModal([cliente])" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>'+
+                '<span id="cantidad-_cliente_" data-toggle="tooltip" class="badge bg-yellow">[cantidad]</span>'+
+                '<button id="collapse-_cliente_" onclick="fc_collapseModal(_cliente_)" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>'+
                 '<button type="button" class="btn btn-box-tool" data-toggle="tooltip" data-widget="chat-pane-toggle" data-original-title="Contacts"><i class="fa fa-fw fa-cubes"></i></button>'+
-                '<button onclick="closeModal([cliente])" type="button" class="btn btn-box-tool" data-widget="close"><i class="fa fa-times"></i></button>'+
+                '<button onclick="fc_closeModal(_cliente_)" type="button" class="btn btn-box-tool" data-widget="close"><i class="fa fa-times"></i></button>'+
                 '</div>'+
                 '</div>'+
                 '<div class="box-body">'+
@@ -195,20 +414,20 @@
                 '</div>'+
                 '<div class="nav-tabs-custom">'+
                 '<div class="direct-chat-contacts">'+
-                '<ul id="nav-[cliente]" class="contacts-list">'+
+                '<ul id="nav-_cliente_" class="contacts-list">'+
                 '</ul>'+
                 '</div>'+
-                '<div class="tab-content no-padding" id="content-tabs-[cliente]">'+
+                '<div class="tab-content no-padding" id="content-tabs-_cliente_">'+
                 '</div>'+
                 '</div>'+
                 '</div>'+
                 '</div>',
-                S: '<div id="modal-[cliente]" class="box direct-chat">'+
-                '<div class="box-header with-border">'+
+                S: '<div id="modal-_cliente_" class="box direct-chat">'+
+                '<div id="box-header-_cliente_" class="box-header">'+
                 '<h3 class="box-title">[nombre]</h3>'+
                 '<div class="box-tools pull-right">'+
-                '<button id="collapse-[cliente]" onclick="collapseModal([cliente])" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>'+
-                '<button onclick="closeModal([cliente])" type="button" class="btn btn-box-tool" data-widget="close"><i class="fa fa-times"></i></button>'+
+                '<button id="collapse-_cliente_" onclick="fc_collapseModal(_cliente_)" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>'+
+                '<button onclick="fc_closeModal(_cliente_)" type="button" class="btn btn-box-tool" data-widget="close"><i class="fa fa-times"></i></button>'+
                 '</div>'+
                 '</div>'+
                 '<div class="box-body">'+
@@ -220,582 +439,727 @@
                 '</div>'+
                 '</div>'+
                 '</div>',
-                T: '<div class="[class]" id="tab-[pedido]">'+
+                T: '<div class="[class]" id="tab-_pedido_-_indice_">'+
                 '<div class="row datos">'+
-                '<div class="col-md-6"><b>Pedido: </b><span>[pedido]</span>  <span name="estado" class="label [class-estado]">[estado]</span> </div>'+
+                '<div class="col-md-6"><b>Pedido: </b><span>_pedido_</span>  <span name="estado" class="label [class-estado]">[estado]</span> </div>'+
                 '<div class="col-md-6"><b>Recibo: </b><span name="factura">[factura]</span></div>'+
                 '<div class="col-md-6"><b>Total: </b><span name="total">[total]</span></div>'+
                 '<div class="col-md-6"><b>Fecha: </b><span name="fecha">[fecha]</span></div>'+
                 '<div class="col-md-12"><b>Vendedor: </b><span name="vendedor">[vendedor]</span></div>'+
-                '[motivo-no-venta]'+
+                '<div id="extra-_pedido_-_indice_" class="col-md-12">[motivo-no-venta]</div>'+
                 '</div>'+
                 '<div class="table-responsive">'+
-                '<div id="overlay-[pedido]" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>'+
+                '<div id="overlay-_pedido_-_indice_" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>'+
                 '<table class="table table-striped">'+
                 '<thead>' +
-                '<tr> <th>Producto</th> <th>Cantidad</th> <th>Und</th> <th>Importe</th></tr>'+
+                '<tr> <th>Producto</th> <th>Cant<span class="hidden-xs">idad</span></th> <th>Und</th> <th>Importe</th></tr>'+
                 '</thead>'+
-                '<tbody id="table-[pedido]">'+
+                '<tbody id="table-_pedido_-_indice_">'+
                 '</tbody>'+
                 '</table>'+
                 '</div>'+
                 '</div>',
                 N: '<li class="[class]">'+
-                '<a href="#tab-[pedido]" data-toggle="tab" data-widget="chat-pane-toggle" aria-expanded="false">'+
+                '<a href="#tab-_pedido_-[indice]" data-toggle="tab" data-order="[order]"  data-cliente="[cliente]"  data-widget="chat-pane-toggle" aria-expanded="false">'+
                 '<div class="contacts-list-img"><i class="fa fa-star-o"></i></div>'+
                 '<div class="contacts-list-info">'+
-                '<span class="contacts-list-name">[pedido] <small name="estado"> ( [estado] )</small> <small name="fecha" class="contacts-list-date pull-right">[fecha]</small> </span>'+
+                '<span class="contacts-list-name">_pedido_ (<small name="estado">[estado]</small>) <small name="fecha" class="contacts-list-date pull-right">[fecha]</small> </span>'+
                 '<span class="contacts-list-msg">[vendedor] <small name="total" class="contacts-list-date pull-right">S/ [total]</small> </span>'+
                 '</div>'+
                 '</a>'+
                 '</li>'
-            } /* onClick="mostrarUbicacion(\"[pedido]\",\"[cliente]\")"*/
-            util = {
-                G: { nombre: 'Visitado', img: iconMapBase + 'icon_geomarker_greenldpi.png', html: htmlPedido},
-                D: { nombre: 'No visitado', img: iconMapBase + 'icon_geomarker_greyldpi.png', html: htmlNoPedido},
-                A: { nombre: 'No venta', img: iconMapBase + 'icon_geomarker_redldpi.png', html: htmlNoVenta},
-                F: { nombre: 'Factura', img: iconMapBase + 'icon_geomarker_purpleldpi.png', html: htmlPedido }
+            }
+
+            iconos = {
+                'G': iconMapBase + 'icon_geomarker_greenldpi.png',
+                'D': iconMapBase + 'icon_geomarker_greyldpi.png',
+                'A': iconMapBase + 'icon_geomarker_redldpi.png',
+                'F': iconMapBase + 'icon_geomarker_purpleldpi.png',
+                '0': iconMapBase + 'icon_geomarker_redldpi.png'
             };
+			
+			/*$('#fecha').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+            $('#fecha').datepicker({ language:'es', autoclose: true , orientation: 'top'});*/
 
-            $('#desde').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
-            $('#hasta').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
-
-            $('#desde').datepicker({ language:'es', autoclose: true });
-            $('#hasta').datepicker({ language:'es', autoclose: true });
-
-            map = new google.maps.Map(document.getElementById('mapa'), {
-                zoom: 10,
-                center: centro
-            });
-            for (var key in util) {
-                var icono = util[key]; var nombre = icono.nombre; var icono = icono.img; var div = document.createElement('div');
-                div.innerHTML = '<img src="' + icono + '"> ' + nombre+'<p id="total'+key+'"><p/>';
-                legend.appendChild(div);
-            }
-            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legenda);
-
-            // Path by google https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m
-            markerCluster = new MarkerClusterer(map, null, {imagePath: iconMapBase});
-            obtenerSucursales();
-
-            $("#sucursales" ).change(function() {
-                var sucursal = $(this).val();
-                if(sucursal !== "x"){
-                    limpiarMapa();
-                    $("#rutas").empty();
-                    $('#sucursales option[value="x"]').remove();
-                    $("#overlay").removeClass("hidden");
-                    obtenerRutas();
-                    $.ajax({
-                        type: "POST",
-                        dataType: 'json',
-                        data: { sucursal: sucursal },
-                        url: "get/fecha"
-                    })
-                        .done(function(jsondata){
-                            if($("#desde").val() == "" || $("#hasta").val() == ""){
-                                fechaDefecto = jsondata;
-                                $("#desde").val(jsondata);
-                            }
-                        })
-                        .fail(function() {
-                            alert( "Error al obtener las sucursales" );
-                        });
+			$('input[type="checkbox"].minimal').iCheck({ checkboxClass: 'icheckbox_square-green' });
+			
+			$('.ir-arriba').click(function(){
+                if( $("#button-up").hasClass("hidden") ){
+                    $('html,body').animate({scrollTop: $("#mapa").offset().top}, 1000);
+                }else{
+                    var modalID = $("#floating-button").data("offset");
+                    var modalOffset = $(modalID).offset().top;
+                    $('html,body').animate({ scrollTop: modalOffset }, 1000);
                 }
             });
 
-            $("#rutas" ).change(function() {
-                $("#overlay").removeClass("hidden");
-                $('#rutas option[value="x"]').remove();
-                limpiarMapa();
-                obtenerPosicionCliente();
-            });
-
-            $('#btnFecha').click(function() {
-                //limpiar pedidos
-                //remover timer
-                $("#overlay").removeClass("hidden");
-                limpiarMapa();
-                actualizarPedidos(true);
-            });
-
-            $('#checkAgrupar').change(function() {
-                if($("#sucursales").val() !== "x"){
-                    if(!this.checked){ markerCluster.clearMarkers(); }
-                    establecerMapaClientes(map, false);
-                }
-            });
-
-            $( "#centrarMapa" ).click(function() {
-                if($("#sucursales").val() !== "x"){  map.fitBounds(bounds); }
-            });
-
-            $( "#refrescarMapa" ).click(function() {
-                if($("#sucursales").val() !== "x"){
-                    if ( timerPedidos ) {clearInterval(timerPedidos);}
-                    actualizarPedidos(true);
-                }
-            });
-        });
-
-        function obtenerSucursales() {
-            $.ajax({
-                global: false,
-                type: "POST",
-                dataType: 'json',
-                url: "get/sucursales",
-                success: function(jsondata){
-                    var select = $('#sucursales');
-
-                    $.each(jsondata, function(index, element) {
-                        select.append("<option value='"+ element['idSucursal'] +"'>" + element['nombre'].toLowerCase() + "</option>");
-                    });
-                    $('#sucursales').select2({
-                        language: 'es'
-                    });
-                }
-            });
-        }
-
-        function obtenerRutas() {
-            var sucursal = $("#sucursales").val();
-            $.ajax({
-                global: false,
-                type: "POST",
-                dataType: 'json',
-                data: { sucursal: sucursal },
-                url: "get/rutas"
-            })
-                .done(function(jsondata) {
-                    var select = $('#rutas');
-                    select.append("<option value='x'>Ninguna</option>");
-                    $.each(jsondata, function(index, element){ select.append("<option value='"+ element['idRuta'] +"'>" + element['idRuta'] + "</option>"); });
-                    select.append("<option value='all'>Todas</option>");
-                    $('#sucursales').select2({ language: 'es' });
-                    select.prop( "disabled", false );
-                })
-                .fail(function() {
-                    alert( "Error" );
-                })
-                .always(function(){
-                    $("#overlay").addClass("hidden");
-                });
-        }
-
-        function obtenerPosicionCliente() {
-            var sucursal = $("#sucursales").val();
-            var ruta = $("#rutas" ).val();
-            var desde = $("#desde" ).val();
-            var hasta = $("#hasta" ).val();
-
-            $.ajax({
-                type: 'POST',
-                url: 'get/clientes',
-                data: { sucursal: sucursal, ruta : ruta, desde : desde, hasta : hasta },
-            })
-            .done(function(jsondata) {
-
-                for(var i=0; i<jsondata.length; i++){ agregarMarcadorCliente(jsondata[i]); }
-                bounds = new google.maps.LatLngBounds();
-                for (var i = 0; i < listaClientes.length; i++){ bounds.extend(clientesMarkers[listaClientes[i]].markerCliente.getPosition()); }
-                map.fitBounds(bounds);
-
-            })
-            .fail(function() {
-                alert( "Error" );
-            })
-            .always(function() {
-                if(desde == fechaDefecto){
-                    console.log("fecha actual, se inicia el timer");
-                    if (timerPedidos ){ clearInterval(timerPedidos); }
-                    timerPedidos = setInterval(function() { actualizarPedidos(false); }, 300 * 1000);
-                }
-                $("#overlay").addClass("hidden");
-            });
-        }
-
-        function closeModal(cliente){
-            $('#modal-'+cliente).removeClass("show");
-            //Quitar las referencia de todos sus pedidos
-            var lista = clientesMarkers[cliente].listaPedidos;
-            console.log("length: "+lista.length);
-            for(var i=0; i<lista.length; i++){
-                clientesMarkers[cliente].listaPedidos[i].markerPedido.setMap(null);
-                clientesMarkers[cliente].listaPedidos[i].posicionPedido.setMap(null);
-            }
-        }
-
-        function collapseModal(cliente){
-
-            if($(this).data("widget") == "extend"){
-                $('#modal-'+cliente).removeClass("collapsed-box");
-                $(this).data("widget", "collapse");
-            }else{
-                $('#modal-'+cliente).addClass("collapsed-box");
-                $(this).data("widget", "extend");
-            }
-
-        }
-
-        function agregarPedidoModal( cliente, indice){
-            var htmlNav = esquema["N"];
-            var tabPedido =  esquema["T"];
-            var pedido = clientesMarkers[cliente].listaPedidos[indice]
-
-            if(indice == 0){
-                tabPedido = tabPedido.replace('[class]', "tab-pane active");
-                htmlNav = htmlNav.replace('[class]', "active");
-                //mostrar puntos en el mapa
-                clientesMarkers[cliente].listaPedidos[indice].markerPedido.setMap(map);
-                clientesMarkers[cliente].listaPedidos[indice].posicionPedido.setMap(map);
-
-            }else{
-                tabPedido = tabPedido.replace('[class]', "tab-pane");
-                htmlNav = htmlNav.replace('[class]', "");
-            }
-
-            htmlNav = htmlNav.replace('[pedido]', pedido.numeroPedido);
-            htmlNav = htmlNav.replace('[pedido]', pedido.numeroPedido);
-            htmlNav = htmlNav.replace('[pedido]', pedido.numeroPedido);
-            htmlNav = htmlNav.replace('[fecha]', pedido.fecha);
-            htmlNav = htmlNav.replace('[estado]', pedido.estado);
-            htmlNav = htmlNav.replace('[total]', pedido.importeTotal);
-            htmlNav = htmlNav.replace('[vendedor]', pedido.vendedor);
-
-            tabPedido = tabPedido.replace('[pedido]', pedido.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', pedido.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', pedido.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', pedido.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', pedido.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', pedido.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', pedido.numeroPedido);
-            tabPedido = tabPedido.replace('[total]', pedido.importeTotal);
-            tabPedido = tabPedido.replace('[fecha]', pedido.fecha);
-            tabPedido = tabPedido.replace('[estado]', pedido.estado);
-            tabPedido = tabPedido.replace('[class-estado]', "label-" + pedido.estado);
-            tabPedido = tabPedido.replace('[vendedor]', pedido.vendedor);
-
-            if(pedido.estado == 'A'){
-                tabPedido = tabPedido.replace('[motivo-no-venta]', '<div class="col-md-12"> <b> Motivo no venta: </b> '+pedido.motivo+"</div>");
-            }else {
-                tabPedido = tabPedido.replace('[motivo-no-venta]', "");
-            }
-
-            if(pedido.estado == 'F'){
-                tabPedido = tabPedido.replace('[factura]', pedido.factura);
-            }else{
-                tabPedido = tabPedido.replace('[factura]', "");
-            }
-
-            $("#content-tabs-"+cliente).append(tabPedido);
-            $("#nav-"+cliente).append(htmlNav);
-
-            $.ajax({
-                type: "POST",
-                data: { sucursal: $("#sucursales" ).val() , pedido : pedido.numeroPedido },
-                dataType: 'json',
-                url: "get/detallePedido",
-                indexAjax: indice,
-                clienteAjax: cliente,
-                pedidoAjax: pedido.numeroPedido
-            })
-                .done(function(jsonDetallePedido) {
-                    var tablaPedido = "";
-
-                    $.each(jsonDetallePedido, function(index, item) {
-                        tablaPedido += '<tr><td>'+item['descripcion']+'</td><td>'+item['cantidad']+'</td><td>'+item['unidad']+'</td><td>'+item['precioNeto']+'</td></tr>';
-                    });
-
-                    $("#table-"+this.pedidoAjax).append(tablaPedido);
-                    $("#overlay-"+this.pedidoAjax).addClass('hidden');
-
-                    clientesMarkers[this.clienteAjax].listaPedidos[this.indexAjax].ajaxPedido = true;
-
-                })
-                .fail(function() {
-                    alert( "Error" );
-                });
-
-            /*
-            var htmlNav = esquema["N"];
-            var tabPedido =  esquema["T"];
-
-            htmlNav = htmlNav.replace('[class]', "");
-            htmlNav = htmlNav.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-            htmlNav = htmlNav.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-            htmlNav = htmlNav.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-            htmlNav = htmlNav.replace('[fecha]', pedidoNuevo.fecha);
-            htmlNav = htmlNav.replace('[estado]', pedidoNuevo.estado);
-            htmlNav = htmlNav.replace('[total]', pedidoNuevo.importeTotal);
-            htmlNav = htmlNav.replace('[vendedor]', pedidoNuevo.vendedor);
-
-            tabPedido = tabPedido.replace('[class]', "tab-pane");
-            tabPedido = tabPedido.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-
-            tabPedido = tabPedido.replace('[vendedor]', pedidoNuevo.vendedor);
-            tabPedido = tabPedido.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-            tabPedido = tabPedido.replace('[pedido]', 'N'+pedidoNuevo.numeroPedido);
-            tabPedido = tabPedido.replace('[total]', pedidoNuevo.importeTotal);
-            tabPedido = tabPedido.replace('[fecha]', pedidoNuevo.fecha);
-            tabPedido = tabPedido.replace('[estado]', pedidoNuevo.estado);
-            tabPedido = tabPedido.replace('[class-estado]', "label-"+pedidoNuevo.estado);
-
-            if(pedidoNuevo.estado == 'A'){
-                tabPedido = tabPedido.replace('[motivo-no-venta]', '<div class="col-md-12"> <b> Motivo no venta: </b> '+pedidoNuevo.motivo+"</div>");
-            }else {
-                tabPedido = tabPedido.replace('[motivo-no-venta]', "");
-            }
-
-            if(pedidoNuevo.estado == 'F'){
-                tabPedido = tabPedido.replace('[factura]', pedidoNuevo.factura);
-            }else{
-                tabPedido = tabPedido.replace('[factura]', "");
-            }
-
-            $.ajax({
-                type: "POST",
-                data: { sucursal: $("#sucursales" ).val() , pedido : pedidoNuevo.numeroPedido },
-                dataType: 'json',
-                url: "get/detallePedido",
-                indexAjax: indice,
-                clienteAjax: pedidoNuevo.idCliente,
-                pedidoAjax: pedidoNuevo.numeroPedido
-            })
-            .done(function(jsonDetallePedido) {
-                var tablaPedido = "";
-                $.each(jsonDetallePedido, function(index, item) {
-                    tablaPedido += '<tr><td>'+item['descripcion']+'</td><td>'+item['cantidad']+'</td><td>'+item['unidad']+'</td><td>'+item['precioNeto']+'</td></tr>';
-                });
-                $("#table-N"+this.pedidoAjax).append(tablaPedido);
-                $("#overlay-N"+this.pedidoAjax).addClass('hidden');
-                clientesMarkers[this.clienteAjax].listaPedidos[this.indexAjax].ajaxPedido = true;
-            })
-            .fail(function() {
-                alert( "Error" );
-            });
-
-            $("#nav-"+pedidoNuevo.idCliente).append(htmlNav);
-            $("#content-tabs-"+pedidoNuevo.idCliente).append(tabPedido);
-*/
-        }
-
-        function actualizarModalPedido( indice, pedidoNuevo){
-            var datos = {
-                factura : pedidoNuevo.factura,
-                total : pedidoNuevo.importeTotal,
-                fecha : pedidoNuevo.fecha,
-                estado : pedidoNuevo.estado,
-                vendedor : pedidoNuevo.vendedor
-            }
-            $( "#tab-"+pedidoNuevo.numeroPedido+" span").each(function( index ) {
-
-                $(this).html( datos[$(this).attr("name")]);
-                console.log($(this).attr("name"));
-            });
-
-            $( "#nav-"+pedidoNuevo.numeroPedido+" small").each(function( index ) {
-
-                $(this).html( datos[$(this).attr("name")]);
-                console.log($(this).attr("name"));
-            });
-
-            $("#table-"+pedidoNuevo.numeroPedido).html();
-            $("#overlay-"+pedidoNuevo.numeroPedido).removeClass("hidden");
-
-            //$( "input[id][name$='man']" ).val( "only this one" );
-            $.ajax({
-                type: "POST",
-                data: { sucursal: $("#sucursales" ).val() , pedido : pedidoNuevo.numeroPedido },
-                dataType: 'json',
-                url: "get/detallePedido",
-                indexAjax: indice,
-                clienteAjax: pedidoNuevo.idCliente,
-                pedidoAjax: pedidoNuevo.numeroPedido
-            })
-                .done(function(jsonDetallePedido) {
-                    var tablaPedido = "";
-
-                    $.each(jsonDetallePedido, function(index, item) {
-                        tablaPedido += '<tr><td>'+item['descripcion']+'</td><td>'+item['cantidad']+'</td><td>'+item['unidad']+'</td><td>'+item['precioNeto']+'</td></tr>';
-                    });
-
-                    $("#table-"+this.pedidoAjax).append(tablaPedido);
-                    $("#overlay-"+this.pedidoAjax).addClass('hidden');
-
-                    clientesMarkers[this.clienteAjax].listaPedidos[this.indexAjax].ajaxPedido = true;
-
-                })
-                .fail(function() {
-                    alert( "Error" );
-                });
-        }
-
-        function mostrarModalCliente(cliente){
-            $( "#content-cliente .box.direct-chat.ui-draggable.ui-draggable-handle.show").each(function( index ){
-                $(this).removeClass("show");
-            });
-
-            if ($('#modal-'+cliente).length <= 0) {
-
-                if(clientesMarkers[cliente].existePedido){
-                    var listaPedido = clientesMarkers[cliente].listaPedidos;
-                    var htmlModal = esquema["P"];
-
-                    htmlModal = htmlModal.replace('[cliente]', cliente );
-                    htmlModal = htmlModal.replace('[nombre]', clientesMarkers[cliente].razonSocial );
-                    htmlModal = htmlModal.replace('[cantidad]', listaPedido.length );
-                    htmlModal = htmlModal.replace('[ruc]', clientesMarkers[cliente].rucDni );
-                    htmlModal = htmlModal.replace('[modulo]', clientesMarkers[cliente].modulo );
-                    htmlModal = htmlModal.replace('[correo]', clientesMarkers[cliente].correo );
-                    htmlModal = htmlModal.replace('[direccion]', clientesMarkers[cliente].direccion );
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-
-                    $('#content-cliente').append(htmlModal);
-
-                    for(var i=0; i<listaPedido.length; i++){
-                        agregarPedidoModal(cliente, i);
+            $(window).scroll(function(){
+                var modalID = $("#floating-button").data("offset");
+                if( modalID !== 'undefined' && $(this).scrollTop() > 0 ){
+                    if( $(this).scrollTop() > ($("#mapa").offset().top - 100) ){
+                        if($("#button-up").hasClass("hidden") ){
+                            $("#button-up").removeClass("hidden");
+                            $("#button-down").addClass("hidden");
+                        }
+                    }else{
+                        if($("#button-down").hasClass("hidden") ){
+                            $("#button-down").removeClass("hidden");
+                            $("#button-up").addClass("hidden");
+                        }
                     }
-
-                }else{
-                    var htmlModal = esquema["S"];
-
-                    htmlModal = htmlModal.replace('[cliente]', cliente );
-                    htmlModal = htmlModal.replace('[nombre]', clientesMarkers[cliente].razonSocial );
-                    htmlModal = htmlModal.replace('[ruc]', clientesMarkers[cliente].rucDni );
-                    htmlModal = htmlModal.replace('[modulo]', clientesMarkers[cliente].modulo );
-                    htmlModal = htmlModal.replace('[correo]', clientesMarkers[cliente].correo );
-                    htmlModal = htmlModal.replace('[direccion]', clientesMarkers[cliente].direccion );
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-                    htmlModal = htmlModal.replace('[cliente]', cliente );// ver como remplazar todo no 1x1
-
-                    $('#content-cliente').append(htmlModal);
                 }
+            });
 
+			map = new google.maps.Map(document.getElementById('mapa'), {
+                zoom: 10,
+                center: centro,
+                gestureHandling: 'greedy',
+                fullscreenControl: false,
+                mapTypeControl: false,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                },
+                streetViewControlOptions: {
+                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                }
+            });
+			// Define a symbol using a predefined path (an arrow)
+			// supplied by the Google Maps JavaScript API.
+			var lineSymbol = {
+			  path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+			};
+		
+			actualPolyLine = new google.maps.Polyline({
+			    strokeColor: '#000000',
+				icons: [{icon: {path:google.maps.SymbolPath.FORWARD_OPEN_ARROW,strokeWeight:3.5,scale:2.8}, offset: '100%',repeat:'35px'}],				 
+				strokeColor: '#2edc9d',
+			    strokeOpacity: 1.0 
+			});
+			actualPolyLine.setMap(map);
+					
+			// Path by google https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m            
+			markerClusterClientes = new MarkerClusterer(map, null, {imagePath: iconMapBase});
+			markerClusterPedidos  = new MarkerClusterer(map, null, {imagePath: iconMapBase});
+			/*
+			$("#zonas" ).change(function() {
+                sc_obtenerRutas(); 
+            });
+
+            $("#rutas").change(function() {
+				if($(this).val()!== "x"){ 
+					$('#rutas option[value="x"]').remove(); 
+					sc_obtenerVendedores();
+				}
+            });
+
+			$("#vendedores").change(function() {
+				if($(this).val()!== "x"){ 
+					$('#vendedores option[value="x"]').remove();
+				}
+			});
+			*/
+
+            // Obtener Pedidos Inicio
+            fc_actualizarVariablesGlobales();
+            fc_limpiarPedidos();
+            sc_obtenerPosicionCliente();
+            fc_validarTimer($("#fecha").val());
+		 	
+			setTimeout( resizeMap, 1500); 
+			
+			function resizeMap(){
+				google.maps.event.trigger(map,'resize');
+				if(bounds){
+					map.fitBounds(bounds);
+				}
+			}
+			
+            $("#btnBuscar").click(function(){
+				fc_actualizarVariablesGlobales(); 
+				fc_limpiarPedidos();
+				fc_validarTimer($("#fecha").val()); 
+				sc_obtenerPosicionCliente();
+				
+				/*md_actualizarDashboard();*/
+			});
+			
+			$("#btnLimpiar").click(function(){
+				fc_limpiarPedidos(); 
+				sc_actualizarPedidos(true);
+				fc_validarTimer($("#fecha").val());
+			});
+			
+						
+			/*
+			* Funciones
+			*/			
+			function sc_obtenerZonas() {
+				$("#overlay").removeClass("hidden");
+				$.ajax({
+					global: false,
+					type: "POST",
+					dataType: 'json',
+					url: "{{ url('/') }}/get/zonas",
+					success: function(jsondata){
+						var select = $('#zonas');
+						$.each(jsondata, function(index, element) {
+							select.append("<option value='"+ element['idZona'] +"'>" + element['descripcion'].toLowerCase() + "</option>");							
+						}); 
+						select.append("<option value='all'>Todos</option>");
+						select.val(zonaFiltro).trigger('change'); 
+						$("#overlay").addClass("hidden");
+					}
+				});
+			}
+			
+			function sc_obtenerRutas() {
+				$("#overlay").removeClass("hidden"); 
+				$.ajax({
+					global: false,
+					type: "POST",
+					dataType: 'json',
+					data: { "zona": zonaFiltro },
+					url: "{{ url('/') }}/get/rutas"
+				})
+				.done(function(jsondata) {
+					var select = $('#rutas');
+					select.empty();
+					if( rutaFiltro == 'x' ){ select.append("<option value='x'>Ninguna</option>"); } 
+					$.each(jsondata, function(index, element){ select.append("<option value='"+ element['idRuta'] +"'>" + element['idRuta'] + "</option>"); });
+					select.append("<option value='all'>Todas</option>");
+					select.val(rutaFiltro).trigger('change');
+					select.prop( "disabled", false );
+					$("#overlay").addClass("hidden"); 
+				})
+				.fail(function() {
+					alert( "Error" );
+				});
+			}
+		
+			function sc_obtenerVendedores(){
+				$("#overlay").removeClass("hidden"); 
+				$.ajax({
+					global: false,
+					type: "POST",
+					dataType: 'json',
+					data: { "zona": zonaFiltro, "ruta": rutaFiltro },
+					url: "{{ url('/') }}/get/vendedores"
+				})
+				.done(function(jsondata) {
+					var select = $('#vendedores'); 
+					select.empty();
+					$.each(jsondata, function(index, element){ select.append("<option value='"+ element['idPersona'] +"'>" + element['nombre'] + "</option>"); });
+					select.append("<option value='all'>Todos</option>");
+					select.val(vendedorFiltro).trigger('change');
+					select.prop( "disabled", false );
+					$("#overlay").addClass("hidden");				
+				})
+				.fail(function() {
+					alert( "Error" );
+				});
+			}
+
+			function fc_actualizarVariablesGlobales(){				
+				//zonaFiltro = $("#zonas").val();
+				//rutaFiltro = $("#rutas").val();
+                //vendedorFiltro = $("#vendedores").val();
+				fechaPreventaFiltro = $("#fecha").val();
+			}
+			
+			function fc_validarTimer(fecha){
+				if (timerPedidos){ clearInterval(timerPedidos); }
+				if( fecha == $("#fechaPorDefecto").val()){
+					timerPedidos = setTimeout(function() { sc_actualizarPedidos(false); }, 100);
+				}
+			}
+		
+			function sc_obtenerPosicionCliente() {
+				$("#overlay").removeClass("hidden");
+				$.ajax({
+					type: 'POST',
+					url: "{{ url('/') }}/get/clientes",
+					data: { zona: zonaFiltro, ruta : rutaFiltro, fecha : fechaPreventaFiltro, vendedor : vendedorFiltro } 
+				})
+				.done(function(jsondata) {
+console.log("Recorrer"+jsondata.length);
+					for(var i=0; i<jsondata.length; i++){  md_agregarDatosCliete(jsondata[i]); } 
+					bounds = new google.maps.LatLngBounds();
+					/*SE VAN A CENTRAR EN BASE A PEDIDOS MAS NO A CLIENTES
+                    for (var i = 0; i < listaClientes.length; i++){ 						
+						var ubicacionCliente = new google.maps.LatLng( datosClientes[listaClientes[i]].latitud, datosClientes[listaClientes[i]].longitud);				
+						bounds.extend(ubicacionCliente); 
+					}  
+					*/
+					sc_actualizarPedidos(true);
+				})
+				.fail(function() {
+					alert( "Error" );
+				})
+			}
+			
+			function md_agregarDatosCliete(jsondata){
+console.log("agregar cliente"+jsondata);
+				var cliente = new Array();
+				var estado = jsondata.estado;
+				var codigoCliente = jsondata.codigo;
+				
+				if(listaClientes.indexOf(codigoCliente) < 0){
+					cliente['markerCliente'] = null;
+					cliente['rucDni'] = jsondata.documento;
+					cliente['correo'] = jsondata.email;
+					cliente['modulo'] = jsondata.modulo;
+					cliente['latitud'] = jsondata.latitudCliente;
+					cliente['longitud'] = jsondata.longitudCliente;
+					cliente['markerCliente'] = -1;
+                    cliente['existePedido'] = false;
+					cliente['direccion'] = jsondata.direccion.toLowerCase();
+					cliente['razonSocial'] = jsondata.nombre;
+					cliente['listaPedidos'] = new Array();
+
+					datosClientes[codigoCliente] = cliente;
+					listaClientes.push(codigoCliente);
+				} 
+			}
+			
+			function sc_actualizarPedidos(mostrarOverlay){			    
+				$.ajax({
+					type: 'POST',
+					url: "{{ url('/') }}/get/pedidos",
+					data: { zona: zonaFiltro, ruta : rutaFiltro, fecha : fechaPreventaFiltro, vendedor : vendedorFiltro }
+				}).done(function(jsondata) {
+					$.each(jsondata, function(index, pedido) {
+						var numCliente = pedido.cliente;
+						var nuevoEstado = pedido.estado;
+						
+						if(datosClientes[numCliente]){ 
+							if(datosClientes[numCliente].existePedido){
+								 if((indexPedido = fc_obtenerIndicePedido(numCliente, pedido.pedido)) >= 0){
+									 //actualizar pedido
+                                     var oldEstado =  datosClientes[numCliente].listaPedidos[indexPedido].estado;
+                                     var importeTotal =  datosClientes[numCliente].listaPedidos[indexPedido].importeTotal;
+                                     var fecha =  datosClientes[numCliente].listaPedidos[indexPedido].fecha;
+											
+                                     if(!(nuevoEstado == oldEstado && pedido.importeTotal == importeTotal && pedido.fechaPedido == fecha)){
+																				 
+										md_actualizarModalPedido(indexPedido, pedido);
+										datosClientes[numCliente].listaPedidos[indexPedido].estado = nuevoEstado;
+										datosClientes[numCliente].listaPedidos[indexPedido].importeTotal = pedido.importeTotal;
+										datosClientes[numCliente].listaPedidos[indexPedido].fecha = pedido.fechaPedido;
+										
+                                         //actualizar latitud y longitud
+										if( nuevoEstado != oldEstado ){
+											
+											var indiceMarkerPedido = datosClientes[numCliente].listaPedidos[indexPedido].markerPedido;
+											var nuevaUbicacion = new google.maps.LatLng( pedido.latitud, pedido.longitud);
+											listaMarkersPedidos[indiceMarkerPedido].setPosition(nuevaUbicacion);											
+											listaMarkersPedidos[indiceMarkerPedido].setIcon(iconos[nuevoEstado]);
+											
+											totalPedidos[oldEstado] = totalPedidos[oldEstado] -1;
+											totalPedidos[nuevoEstado] = totalPedidos[nuevoEstado] +1;
+											
+										}
+                                     }
+								 }else{
+								      //ocultar marcador cliente
+                                     var indiceMarkerCliente = datosClientes[numCliente].markerCliente;
+                                     if(indiceMarkerCliente >= 0){
+                                         listaMarkersClientes[indiceMarkerCliente].setMap(null);
+										 listaMarkersClientes[indiceMarkerCliente] = null; //quitar referencia
+                                     }
+									 //nuevo pedido
+									var indice = md_agregarMarkerPedido(pedido); 
+									md_agregarTabPedidoModal(numCliente, indice);
+								 }
+                                 var nuevoTotalPedido = datosClientes[numCliente].listaPedidos.length;
+                                 $('#cantidad-'+numCliente).html(nuevoTotalPedido);
+							}else{																
+                                var isShow = $("#modal-"+numCliente).hasClass("show");
+                                $("#modal-"+numCliente).remove();								
+                                var indicePedido = md_agregarMarkerPedido(pedido);								
+                                datosClientes[numCliente].existePedido = true;								
+								if(datosClientes[numCliente].markerCliente >= 0){
+									console.log("quitar marker cliente");
+									listaMarkersClientes[datosClientes[numCliente].markerCliente].setMap(null);
+								}								
+                                //Actualizamos al cliente que ya tiene un pedido
+                                if(isShow){ md_mostrarModalCliente( numCliente, indicePedido ,pedido.pedido);  }
+							} 
+						}else{
+							console.log("ALERTA: No existe el cliente "+numCliente+" en el mapa actual, refresque el mapa para obtener este nuevo cliente");
+						}
+						
+						/* centrar mapa - pedidos**/
+						resizeMap();
+					});
+					
+					
+					
+					if(mostrarOverlay){ mostrarClientesSinPedido(); }
+				
+                    md_actualizarDashboard();
+				}).fail(function() {
+					alert( "Error" );
+				}).always(function() {
+					if(mostrarOverlay){
+						$("#overlay").addClass("hidden");
+					}
+				});
+			}
+			
+			function md_agregarMarkerPedido(datosPedido){
+				var nuevoPedido = new Array();
+				var numeroPedido = datosPedido.pedido;
+				var codigoCliente= datosPedido.cliente;
+				var ubicacionPedido = new google.maps.LatLng(datosPedido.latitud, datosPedido.longitud);
+				var label  = ""+(listaMarkersPedidos.length + 1);
+				/* Centrar por pedido **/
+				bounds.extend(ubicacionPedido);
+				/*
+				var marker = new MarkerWithLabel({
+				position: location,
+				map: var_map,
+				labelContent: hora,
+				labelAnchor: new google.maps.Point(22, 0),
+				labelClass: "labels_primary", // the CSS class for the label
+				labelStyle: {opacity: 0.75},
+			    icon: 'site_media/img/gps_inicio.png'
+			});
+			*/
+				var markerPedido = new  MarkerWithLabel({
+					position: ubicacionPedido,
+					map: map,
+					/*label: {text: label , fontSize:"13px" },*/
+					labelContent: label,
+					labelAnchor: new google.maps.Point(10, 0),
+					labelClass: "labels_primary", 
+					icon: iconos[datosPedido.estado], 
+					/*draggable: false,*/
+					title: datosClientes[codigoCliente].razonSocial
+				});
+				
+				//Add polyline
+				var path = actualPolyLine.getPath();
+				path.push(ubicacionPedido);
+				  
+				if($("#checkAgruparPedidos").is(":checked")){
+					markerClusterPedidos.addMarker(markerPedido);
+				}
+				//verificar funcionalidad al modificar algun item (pedido anulado?)
+                totalPedidos['total'] = (totalPedidos['total'] ? totalPedidos['total'] : 0 ) + 1;
+                totalPedidos[datosPedido.estado] = (totalPedidos[datosPedido.estado] ? totalPedidos[datosPedido.estado] : 0 ) + 1;
+
+				nuevoPedido['numeroPedido'] = numeroPedido;
+				nuevoPedido['importeTotal'] = datosPedido.importeTotal;
+				nuevoPedido['estado'] = datosPedido.estado;
+				nuevoPedido['ajaxPedido'] = false;
+				nuevoPedido['motivo'] = datosPedido.motivo;
+				nuevoPedido['factura'] = datosPedido.factura;
+				nuevoPedido['fecha'] =  datosPedido.fechaPedido;
+				nuevoPedido['vendedor'] =  nombreVendedor.toLowerCase();
+
+				listaMarkersPedidos.push(markerPedido);
+				nuevoPedido['markerPedido'] = (listaMarkersPedidos.length-1);
+
+				datosClientes[codigoCliente].listaPedidos.push(nuevoPedido);
+
+				if(!datosClientes[codigoCliente].existePedido){
+					datosClientes[codigoCliente].existePedido = true;
+				}
+				var indicePedido = datosClientes[codigoCliente].listaPedidos.length - 1;
+				
+				(function(codigoClientex,indicePedidox,numeroPedidox){
+					markerPedido.addListener('click', function() {
+						md_mostrarModalCliente(codigoClientex,indicePedidox,numeroPedidox);
+					});
+				}(codigoCliente, indicePedido ,numeroPedido));
+				
+				return ( indicePedido);
+				
+			}
+		
+			function mostrarClientesSinPedido(){
+				
+				for (var i = 0; i < listaClientes.length; i++) {
+					var codigo= listaClientes[i];
+						
+					if( datosClientes[ codigo ].existePedido == false && datosClientes[ codigo ].markerCliente < 0){
+						
+						var ubicacionCliente = new google.maps.LatLng(datosClientes[ codigo ].latitud, datosClientes[ codigo ].longitud);
+												
+						var markerCliente = new google.maps.Marker({
+							position: ubicacionCliente,
+							map: map,
+							icon: iconos['D'], 
+							title: datosClientes[ codigo ].razonSocial
+						});
+						
+						(function(codigox){
+							markerCliente.addListener('click', function() {	
+							md_mostrarModalCliente( codigox  , -1, null);
+							});
+						}(codigo));
+							
+						if($("#checkAgruparClientes").is(":checked")){
+							markerClusterClientes.addMarker(markerCliente);
+						}
+						listaMarkersClientes.push(markerCliente);
+						
+						datosClientes['markerCliente'] = (listaMarkersClientes.length -1);
+					} 
+				}
+			}
+			
+			function md_mostrarModalCliente(cliente, indiceTab, numeroPedido){
+                $( "#content-cliente .box.direct-chat.ui-draggable.show").each(function( index ){
+                    $(this).removeClass("show");
+                });
+				
+				
+					console.log("cliente("+datosClientes[cliente].razonSocial);
+				if ($('#modal-'+cliente).length <= 0) {
+					if(datosClientes[cliente].existePedido){
+						console.log("cliente(S)"+cliente);
+						 
+						 
+						var listaPedido = datosClientes[cliente].listaPedidos;
+						var htmlModal = esquema["P"];
+						htmlModal = htmlModal.replace(/_cliente_/g , cliente );
+						htmlModal = htmlModal.replace('[nombre]', datosClientes[cliente].razonSocial );
+						htmlModal = htmlModal.replace('[cantidad]', listaPedido.length );
+						htmlModal = htmlModal.replace('[ruc]', datosClientes[cliente].rucDni );
+						htmlModal = htmlModal.replace('[modulo]', datosClientes[cliente].modulo );
+						htmlModal = htmlModal.replace('[correo]', datosClientes[cliente].correo );
+						htmlModal = htmlModal.replace('[direccion]', datosClientes[cliente].direccion );
+						$('#content-cliente').append(htmlModal);
+						for(var i=0; i<listaPedido.length; i++){
+							md_agregarTabPedidoModal(cliente, i);
+						}
+						$('#floating-button').slideDown(300);
+						$("#floating-button").data("offset", "#modal-" +cliente);
+					}else{
+						console.log("cliente(N)"+cliente); 
+						var htmlModal = esquema["S"];
+						htmlModal = htmlModal.replace(/_cliente_/g , cliente );
+						htmlModal = htmlModal.replace('[nombre]', datosClientes[cliente].razonSocial );
+						htmlModal = htmlModal.replace('[ruc]', datosClientes[cliente].rucDni );
+						htmlModal = htmlModal.replace('[modulo]', datosClientes[cliente].modulo );
+						htmlModal = htmlModal.replace('[correo]', datosClientes[cliente].correo );
+						htmlModal = htmlModal.replace('[direccion]', datosClientes[cliente].direccion );
+						$('#content-cliente').append(htmlModal);
+					}
+
+					$('#modal-'+cliente).draggable(  { handle: '#box-header-'+cliente } );
+				}else {
+					$('#floating-button').slideDown(300);
+					$("#floating-button").data("offset", "#modal-" +cliente);
+				}
+               
+                if(indiceTab >= 0){ $('#nav-'+cliente+' li a[href="#tab-'+numeroPedido+"-"+indiceTab+'"]').tab('show'); }
                 $('#modal-'+cliente).addClass("show");
-                $('#modal-'+cliente).draggable();
-            }else {
-                if(clientesMarkers[cliente].pedidoActualizado){}
+			}
+			
+			function md_agregarTabPedidoModal( cliente, indice){
+				var htmlNav = esquema["N"];
+				var tabPedido =  esquema["T"];
+				var pedido = datosClientes[cliente].listaPedidos[indice];
 
-                $('#cantidad-'+cliente).html(clientesMarkers[cliente].listaPedidos.length);
-                $('#modal-'+cliente).addClass("show");
-            }
+				tabPedido = tabPedido.replace('[class]', "tab-pane");
+                htmlNav = htmlNav.replace('[class]', "");
+               
+				htmlNav = htmlNav.replace(/_pedido_/g, pedido.numeroPedido);
+				htmlNav = htmlNav.replace('[fecha]', pedido.fecha);
+				htmlNav = htmlNav.replace('[estado]', pedido.estado);
+				htmlNav = htmlNav.replace('[total]', pedido.importeTotal);
+				htmlNav = htmlNav.replace('[vendedor]', pedido.vendedor);
+				htmlNav = htmlNav.replace('[cliente]', cliente);
+				htmlNav = htmlNav.replace('[order]', indice);
+				htmlNav = htmlNav.replace('[indice]', indice);
 
-        }
+				tabPedido = tabPedido.replace(/_pedido_/g, pedido.numeroPedido);
+				tabPedido = tabPedido.replace('[total]', pedido.importeTotal);
+				tabPedido = tabPedido.replace('[fecha]', pedido.fecha);
+				tabPedido = tabPedido.replace('[estado]', pedido.estado);
+				tabPedido = tabPedido.replace('[class-estado]', "label-" + pedido.estado);
+				tabPedido = tabPedido.replace('[vendedor]', pedido.vendedor);
+				tabPedido = tabPedido.replace(/_indice_/g, indice);
 
-        function agregarMarcadorCliente(jsondata){
-            var cliente = new Array();
-            var nuevoPedido= new Array();
-            var listaPedidos = new Array();
-            var existePedido = false;
-            var estado = jsondata.estado;
-            var codigoCliente = jsondata.idCliente;
-            var ubicacionCliente = new google.maps.LatLng(jsondata.latitudCliente, jsondata.longitudCliente);
+				if(pedido.estado == 'A'){
+					tabPedido = tabPedido.replace('[motivo-no-venta]', '<b> Motivo no venta: </b> <span name="motivo">'+pedido.motivo+"</span>");
+				}else {
+					tabPedido = tabPedido.replace('[motivo-no-venta]', "");
+				}
 
-            if(estado != "D"){
+				if(pedido.estado == 'F'){
+					tabPedido = tabPedido.replace('[factura]', pedido.factura);
+				}else{
+					tabPedido = tabPedido.replace('[factura]', "");
+				}
 
-                nuevoPedido['numeroPedido'] = jsondata.numeroPedido;
-                nuevoPedido['importeTotal'] = jsondata.importeTotal;
-                nuevoPedido['pesoTotal'] = jsondata.pesoTotal;
-                nuevoPedido['estado'] = estado;
-                nuevoPedido['ajaxPedido'] = false;
-                nuevoPedido['motivo'] = jsondata.descripcion==null ? '' : jsondata.descripcion.toLowerCase();
-                nuevoPedido['factura'] = jsondata.serieDocumento + "-" + jsondata.numeroDocumento;
-                nuevoPedido['fecha'] =  jsondata.hora;
-                nuevoPedido['vendedor'] =  jsondata.vendedor.toLowerCase();
+				$("#content-tabs-"+cliente).append(tabPedido);
+				$("#nav-"+cliente).append(htmlNav);
 
-                existePedido = true;
+				sc_detallePedido(pedido.numeroPedido, pedido.fecha, cliente, indice);
+				
+			}
 
-                var latitudPedido = jsondata.latitudPedido;
-                var longitudPedido = jsondata.longitudPedido;
-                var ubicacionPedido = new google.maps.LatLng(latitudPedido, longitudPedido);
-                var markerPedido = new google.maps.Marker({
-                    position: ubicacionPedido,
-                    map: null,
-                    icon:  iconMapBase+"icon_geomarker_pinldpi.png",
-                    draggable: false,
-                    title: jsondata.vendedor
-                });
-                var posicionPedido = new google.maps.Polyline({
-                    path: [ubicacionPedido,ubicacionCliente],
-                    icons: [{icon: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, offset: '100%'}],
-                    zIndex: 99,
-                    strokeOpacity: 0.4,
-                    strokeColor: '#FF4500',
-                    map: null
-                });
-
-                /*google.maps.event.addListener(map, 'click', function() {
-                    posicionPedido.setMap(null);
-                    markerPedido.setMap(null);
-                });*/
-
-                nuevoPedido['markerPedido'] = markerPedido;
-                nuevoPedido['posicionPedido'] = posicionPedido;
-
-                listaPedidos.push(nuevoPedido);
-            }
-
-            if(listaClientes.indexOf(codigoCliente) < 0){
-
-                var markerCliente = new google.maps.Marker({
-                    position: ubicacionCliente,
-                    map: map,
-                    icon: util[estado].img,
-                    title: jsondata.razonSocial
+            function md_actualizarModalPedido( indice, pedidoNuevo){			
+                //validar que el actualizar solo si las fechas es igual que configuracion de lo contrario mostrar emnsaje en console
+                var datos = { factura : pedidoNuevo.factura, total : pedidoNuevo.importeTotal, fecha : pedidoNuevo.fechaPedido, estado : pedidoNuevo.estado,
+				vendedor : pedidoNuevo.vendedor , motivo : pedidoNuevo.motivo}; //agregar motivo
+                var estadoAnterior;
+				
+                $( "#tab-"+pedidoNuevo.pedido+"-"+indice+" span").each(function( index ) { 
+                    if($(this).attr("name") == "estado"){
+                        estadoAnterior = $(this).html();
+                        $(this).removeClass();
+                        $(this).addClass("label label-"+datos["estado"]);
+                    }
+					console.log($(this).attr("name")+"   "+datos[$(this).attr("name")]);
+                    $(this).html(datos[$(this).attr("name")]);
                 });
 
-                listaClientes.push(codigoCliente);
-
-                cliente['rucDni'] = jsondata.rucDni;
-                cliente['correo'] = jsondata.correo;
-                cliente['modulo'] = jsondata.modulo;
-                cliente['existePedido'] = existePedido;
-                cliente['pedidoActualizado'] = false;
-                cliente['direccion'] = jsondata.direccion;
-                cliente['razonSocial'] = jsondata.razonSocial;
-                cliente['markerCliente'] = markerCliente;
-                cliente['listaPedidos'] = listaPedidos;
-
-                if ($('#checkAgrupar').is(':checked') ){
-                    markerCluster.addMarker(markerCliente);
+                if(estadoAnterior != datos["estado"] && datos["estado"] == "A"){
+                    $( "#extra-"+pedidoNuevo.pedido+"-"+indice).html('<b>Motivo No Venta: </b><span name="motivo">'+ datos["motivo"] +'</span>');
                 }
 
-                if(estado == "D"){
-                    markerCliente.addListener('click', function() {
-                        mostrarModalCliente(codigoCliente);
-                    });
-                }else{
-                    markerCliente.addListener('click', function() {
-                        /*markerPedido.setMap(map);
-                        posicionPedido.setMap(map);*/
-                        mostrarModalCliente(codigoCliente);
-                    });
-                }
-                clientesMarkers[codigoCliente] = cliente;
+                $( "#nav-"+pedidoNuevo.cliente+" a small").each(function( index ) {
+                    $(this).html( datos[$(this).attr("name")]);
+                });
+				console.log("limpiar tabla"+pedidoNuevo.pedido);
+                $("#table-"+pedidoNuevo.pedido+"-"+indice).html("");
+                $("#overlay-"+pedidoNuevo.pedido+"-"+indice).removeClass("hidden");
 
-            }else{
-                clientesMarkers[codigoCliente].existePedido = existePedido;
-                if(existePedido){clientesMarkers[codigoCliente].listaPedidos.push(nuevoPedido);}
-
-                //listaPedidos = clientesMarkers[codigoCliente].listaPedidos;
+                sc_detallePedido(pedidoNuevo.pedido, pedidoNuevo.fechaPedido, pedidoNuevo.cliente, indice);
+				//actualizar imagen marker
             }
-        }
 
-        function obtenerPedido(cliente, numeroPedido){
+			function sc_detallePedido(numeroPedido, fechaPedido, clientePedido, indicePedido){
+                console.log(numeroPedido+"   "+fechaPedido+"   "+clientePedido+"   "+ indicePedido);
+
+				$.ajax({
+					type: "POST",
+					data: { pedido : numeroPedido , fecha : fechaPedido, cliente : clientePedido },
+					dataType: 'json',
+					url: "{{ url('/') }}/get/detallePedido",
+					indicePedidoAjax: indicePedido,
+					clienteAjax: clientePedido,
+					pedidoAjax: numeroPedido
+				})
+				.done(function(jsonDetallePedido) {
+					//validar si el total es equivalente de lo contrario actualizar los totales
+					var tablaPedido = "";
+					$.each(jsonDetallePedido, function(index, item) {
+						if(item['tipoProducto'] == 'V'){
+							tablaPedido += '<tr><td>'+item['descripcion']+'</td><td>'+item['cantidad']+'</td><td>'+item['unidad']+'</td><td>'+item['precioNeto']+'</td></tr>';
+						}else{
+							tablaPedido += '<tr class="bonificacion"><td>'+item['descripcion']+'</td><td>'+item['cantidad']+'</td><td>'+item['unidad']+'</td><td>0</td></tr>';
+						}
+					});
+
+					$("#table-"+this.pedidoAjax+"-"+this.indicePedidoAjax).append(tablaPedido);
+					$("#overlay-"+this.pedidoAjax+"-"+this.indicePedidoAjax).addClass('hidden');
+					datosClientes[this.clienteAjax].listaPedidos[this.indicePedidoAjax].ajaxPedido = true;
+				})
+				.fail(function() {
+					alert( "Error" );
+				});
+			}
+
+			$( "#refrescarMapa" ).click(function() {
+				fc_limpiarPedidos(); 
+				sc_actualizarPedidos(true);
+				fc_validarTimer($("#fecha").val());
+				resizeMap();				
+			});
+		
+			$('#checkAgruparClientes').on('ifChecked', function(event){
+                $('#checkAgruparClientes').iCheck('disable');
+                document.getElementById("checkAgruparClientes").disabled = true;
+                fc_agruparMarcadoresCliente();
+                $('#checkAgruparClientes').iCheck('enable');
+            });
+			
+			$('#checkAgruparPedidos').on('ifChecked', function(event){
+                $('#checkAgruparPedidos').iCheck('disable');
+                document.getElementById("checkAgruparPedidos").disabled = true;
+                fc_agruparMarcadoresPedido();
+                $('#checkAgruparPedidos').iCheck('enable');
+            });
+
+			function fc_agruparMarcadoresCliente() {				
+				for (var i = 0; i < listaMarkersClientes.length; i++) {
+					markerClusterClientes.addMarker(listaMarkersClientes[i]);
+				}
+			}
+			
+			function fc_agruparMarcadoresPedido() {
+				for (var i = 0; i < listaMarkersPedidos.length; i++) {
+					markerClusterPedidos.addMarker(listaMarkersPedidos[i]);
+				}				
+			}
+
+			function fc_removerAgrupacionMarcadoresCliente() {				
+				for (var i = 0; i < listaMarkersClientes.length; i++) {
+					if(listaMarkersClientes[i] != null){
+						listaMarkersClientes[i].setMap(map);						
+					}
+				}
+			}
+			
+			function fc_removerAgrupacionMarcadoresPedido() {
+				for (var i = 0; i < listaMarkersPedidos.length; i++) {
+					listaMarkersPedidos[i].setMap(map);
+				}				
+			}
+		
+            $('#checkAgruparClientes').on('ifUnchecked', function(event){
+                $('#checkAgruparClientes').iCheck('disable');
+                markerClusterClientes.clearMarkers();
+                fc_removerAgrupacionMarcadoresCliente();
+                $('#checkAgruparClientes').iCheck('enable');
+            });
+			
+			$('#checkAgruparPedidos').on('ifUnchecked', function(event){
+                $('#checkAgruparPedidos').iCheck('disable');
+                markerClusterPedidos.clearMarkers();
+                fc_removerAgrupacionMarcadoresPedido();
+                $('#checkAgruparPedidos').iCheck('enable');
+            });
+
+			
+			function fc_limpiarPedidos(){
+				totalPedidos['A'] = 0;
+				totalPedidos['G'] = 0;
+				totalPedidos['F'] = 0;
+
+				for (var i = 0; i < listaClientes.length; i++) {
+					datosClientes[ listaClientes[i] ].listaPedidos = [];
+					datosClientes[ listaClientes[i] ].existePedido = false;
+					$("#modal-"+listaClientes[i]+" .nav-tabs-custom").html("");
+				}
+				for(var i=0; i<listaMarkersClientes.length; i++){listaMarkersClientes[i].setMap(null);}
+				listaMarkersClientes = [];
+				for(var i=0; i<listaMarkersPedidos.length; i++){listaMarkersPedidos[i].setMap(null);}
+				
+				listaMarkersPedidos =[];
+				actualPolyLine.setPath([]);    
+				
+				markerClusterPedidos.clearMarkers();
+				markerClusterClientes.clearMarkers();
+				
+				md_actualizarDashboard();
+			}
+			
+			$( "#centrarMapa" ).click(function() {
+				resizeMap();	 				
+            });
+		});
+       
+		
+		
+		function fc_obtenerIndicePedido(cliente, numeroPedido){
             var index = -1;
-            var lista = clientesMarkers[cliente].listaPedidos;
+            var lista = datosClientes[cliente].listaPedidos;
             for(var i = 0; i<lista.length; i++){
                 if( lista[i].numeroPedido == numeroPedido){
                     index = i;
@@ -803,126 +1167,128 @@
                 }
             }
             return index;
-        }
+        }	
+		
+		function fc_closeModal(cliente){
+			$('#modal-'+cliente).removeClass("show"); 
+		}
 
-        function actualizarPedidos(overlay){
-            /**optimizar ocnsulta mandando hora actual y verificar que la fecha de creacion o la fecha de actulizacion sean igual o mayor a esa hora**/
-                //verificar que se cierren los demás pedidos antes de abrir otro
-            var latLngPedido;
-            var sucursal = $("#sucursales" ).val();
-            var desde = $("#desde" ).val();
-            var hasta = $("#hasta" ).val();
-            var ruta = $("#rutas" ).val();
+		function fc_collapseModal(cliente){
+			if($(this).data("widget") == "extend"){
+				$('#modal-'+cliente).removeClass("collapsed-box");
+				$(this).data("widget", "collapse");
+			}else{
+				$('#modal-'+cliente).addClass("collapsed-box");
+				$(this).data("widget", "extend");
+			} 
+		}
+		
+        function md_actualizarDashboard(){			
+			$.ajax({
+				global: false,
+				type: "POST",
+				dataType: 'json',
+				data: { "ruta" : rutaFiltro,"zona" : zonaFiltro,"fecha" : fechaPreventaFiltro,"vendedor": 'all' },
+				url: "{{ url('/') }}/get/obtenerResumenVentas"
+			})
+			.done(function(jsondata) {
+				console.log(jsondata); 
+				for(var i = 0; i<jsondata.length; i++){
+					var clientesProgramados = jsondata[i].clientesProgramados;
+					var clientesConPedidos = jsondata[i].clientesConPedidos;
+					var clientesVisitados = jsondata[i].clientesVisitados;
+					var estadoVendedor = jsondata[i].estadoVendedor;
+					var importeVentasx = jsondata[i].importeVentasx;
+					var totalPaquetes = jsondata[i].totalPaquetes;
+					
+					var clientesConPedidosPorcentaje = ((clientesConPedidos/clientesProgramados)*100).toFixed(2) + '%';
+					var clientesNoPedido = clientesProgramados - clientesVisitados;
+					var clientesVisitadosPorcentaje = ((clientesVisitados/clientesProgramados)*100).toFixed(2) + '%';
+					var clientesNoVisitados = clientesProgramados - clientesVisitados;
+					var visitadosPorcentaje = ((clientesVisitados/clientesProgramados)*100).toFixed(2) + '%';
+					var dropPaquetes = (totalPaquetes/clientesConPedidos).toFixed(2);
+					var dropSoles = (importeVentasx/clientesConPedidos).toFixed(2);
+					
+					$("#clientesProgramados").html(clientesProgramados);
+					$("#clientesConPedidos").html(clientesConPedidos);
+					$("#clientesConPedidosPorcentaje").html(clientesConPedidosPorcentaje);  $("#clientesConPedidosPercent").html(clientesConPedidosPorcentaje);
+					$("#totalPaquetes").html(totalPaquetes);
+					$("#clientesNoPedido").html(clientesNoPedido);
+					$("#clientesVisitados").html(clientesVisitados);
+					$("#clientesVisitadosPorcentaje").html(clientesVisitadosPorcentaje);
+					$("#clientesNoVisitados").html(clientesNoVisitados);
+					$("#estadoVendedor").html(estadoVendedor);
+					$("#visitadosPorcentaje").html(visitadosPorcentaje);
+					$("#importeTotal").html(importeVentasx);
+					$("#dropPaquetes").html(dropPaquetes);
+					$("#dropSoles").html(dropSoles);
 
-            $.ajax({
-                type: 'POST',
-                url: 'get/pedido',
-                data: { sucursal: sucursal, ruta : ruta, desde : desde, hasta : hasta }
-            }).done(function(jsondata) {
-                $.each(jsondata, function(index, item) {
-                    if(clientesMarkers[item.idCliente]){
-                        var indexPedido = -1;
-                        if(clientesMarkers[item.idCliente].existePedido){
-                            if((indexPedido = obtenerPedido(item.idCliente,item.numeroPedido)) >= 0){
-                                var estado =  clientesMarkers[item.idCliente].listaPedidos[indexPedido].estado;
-                                var importeTotal =  clientesMarkers[item.idCliente].listaPedidos[indexPedido].importeTotal;
-                                console.log("El pedido se ha modificado (item.estado)"+ item.estado +"  (estado)"+ estado + "  (item.importeTotal)" + item.importeTotal + " (importeTotal)" + importeTotal);
-                                if(!(item.estado == estado && item.importeTotal == importeTotal)){
-                                    actualizarModalPedido(indexPedido, item);
-                                }
-                            }else{
-                                var primerPedido= new Array();
-                                primerPedido['numeroPedido'] = item.numeroPedido;
-                                primerPedido['importeTotal'] = item.importeTotal;
-                                primerPedido['pesoTotal'] = item.pesoTotal;
-                                primerPedido['estado'] = item.estado;
-                                primerPedido['ajaxPedido'] = false;
-                                primerPedido['motivo'] = item.descripcion==null ? '' : item.descripcion.toLowerCase();
-                                primerPedido['factura'] = item.serieDocumento + "-" + item.numeroDocumento;
-                                primerPedido['fecha'] =  item.hora;
-                                primerPedido['vendedor'] =  item.vendedor.toLowerCase();
+					$("#numero-paquete").html(totalPaquetes);
+					$("#importe-total").html(importeVentasx);
+				}
+				
+			})
+			.fail(function() {
+				alert( "Error" );
+			});
+				
+			var iconoU = "<i class='fa fa-caret-up'><i/>";
+			var iconoD = "<i class='fa fa-caret-down'><i/>";
+			
+            var porcentajeNoVenta = typeof totalPedidos['A']  !== 'undefined' ? (100 * totalPedidos['A'])/totalPedidos['total'] : 0;
+            var porcentajePedidoGenerado = typeof totalPedidos['G']  !== 'undefined' ? (100 * totalPedidos['G'])/totalPedidos['total'] : 0;
+            var porcentajeFacturados = typeof totalPedidos['F']  !== 'undefined' ? (100 * totalPedidos['F'])/totalPedidos['total'] : 0;
 
-                                //añadir punto el mapa
-                                var latitudPedido = jsondata.latitudPedido;
-                                var longitudPedido = jsondata.longitudPedido;
-                                var ubicacionPedido = new google.maps.LatLng(latitudPedido, longitudPedido);
-                                var markerPedido = new google.maps.Marker({
-                                    position: ubicacionPedido,
-                                    map: null,
-                                    icon:  iconMapBase+"icon_geomarker_pinldpi.png",
-                                    draggable: false,
-                                    title: jsondata.vendedor
-                                });
-                                var posicionPedido = new google.maps.Polyline({
-                                    path: [ubicacionPedido,ubicacionCliente],
-                                    icons: [{icon: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, offset: '100%'}],
-                                    zIndex: 99,
-                                    strokeOpacity: 0.4,
-                                    strokeColor: '#FF4500',
-                                    map: null
-                                });
+			porcentajeNoVenta = porcentajeNoVenta.toFixed(2);
+			porcentajePedidoGenerado = porcentajePedidoGenerado.toFixed(2);
+			porcentajeFacturados = porcentajeFacturados.toFixed(2);
+			
+            $("#no-venta").html(totalPedidos['A']); //revisar motivos no venta
+			if( porcentajeNoVenta <= 30){ $("#no-venta-label").html(iconoD);
+			}else{ $("#no-venta-label").html(iconoU); }	
+			$("#no-venta-label").append("  "+porcentajeNoVenta+"%");
+            $("#no-venta-sidebar").css("width", porcentajeNoVenta+"%");
 
-                                primerPedido['markerPedido'] = markerPedido;
-                                primerPedido['posicionPedido'] = posicionPedido;
+            $("#pedido-generado").html(totalPedidos['G']);
+						
+			if( porcentajePedidoGenerado <= 30){ $("#pedido-generado-label").html(iconoD);
+			}else{ $("#pedido-generado-label").html(iconoU); }			
+			$("#pedido-generado-label").append("  "+porcentajePedidoGenerado+"%");
+            $("#pedido-generado-sidebar").css("width", porcentajePedidoGenerado + "%");
 
+            $("#facturados").html(totalPedidos['F']);
+			if( porcentajeFacturados <= 30){ $("#facturados-label").html(iconoD);
+			}else{ $("#facturados-label").html(iconoU); }			
+			$("#facturados-label").append("  "+porcentajeFacturados+"%");
+            $("#facturados-sidebar").css("width", porcentajeFacturados + "%");
 
-                                console.log("Nuevo pedido para el cliente");
+            var totalClientes = listaClientes.length;
+            var visitados = 0;
+            var noVisitados = 0;
 
-                                clientesMarkers[item.idCliente].listaPedidos.push(primerPedido);
-                                clientesMarkers[item.idCliente].pedidoActualizado = true;
-
-                                var indice = (clientesMarkers[item.idCliente].listaPedidos.length) - 1;
-                                agregarPedidoModal(item.idCliente, indice);
-
-                                console.log("Lista de pedidos"+clientesMarkers[item.idCliente].listaPedidos.length);
-                            }
-                        }else{
-                            //Limpiar Estructura Actual
-                            $("#modal-"+item.idCliente).remove();
-
-                            var primerPedido= new Array();
-                            primerPedido['numeroPedido'] = item.numeroPedido;
-                            primerPedido['importeTotal'] = item.importeTotal;
-                            primerPedido['pesoTotal'] = item.pesoTotal;
-                            primerPedido['estado'] = item.estado;
-                            primerPedido['ajaxPedido'] = false;
-                            primerPedido['motivo'] = item.descripcion==null ? '' : item.descripcion.toLowerCase();
-                            primerPedido['factura'] = item.serieDocumento + "-" + item.numeroDocumento;
-                            primerPedido['fecha'] =  item.hora;
-                            primerPedido['vendedor'] =  item.vendedor.toLowerCase();
-
-                            clientesMarkers[item.idCliente].listaPedidos.push(primerPedido);
-                            clientesMarkers[item.idCliente].existePedido= true;
-                        }
-
-                    }else{
-                        console.log("ALERTA: No existe el cliente "+item.idCliente+" en el mapa actual, refresque el mapa para obtener este nuevo cliente");
-                    }
-                });
-            }).fail(function() {
-                alert( "Error" );
-            }).always(function() {
-                if(overlay){ $("#overlay").addClass("hidden");}
-            });
-        }
-
-        function limpiarMapa(){
-            establecerMapaClientes(null);
-            clientesMarkers = [];
-            listaClientes = [];
-            markerCluster.clearMarkers();
-        }
-
-        function establecerMapaClientes( nuevoMapa ) {
-            for (var i = 0; i < listaClientes.length; i++){
-                clientesMarkers[listaClientes[i]].markerCliente.setMap(nuevoMapa);
-
-                if ($('#checkAgrupar').is(':checked') ){
-                    markerCluster.addMarker( clientesMarkers[listaClientes[i]].markerCliente );
+            for(var i = 0; i<listaClientes.length; i++){
+                if(datosClientes[listaClientes[i]].existePedido){
+                    visitados += 1;
                 }
             }
-        }
+            noVisitados = totalClientes - visitados;
+            var porcentajeVisitados = ((100 * visitados)/totalClientes).toFixed(2);
+            var porcentajeNoVisitados = ((100 * noVisitados)/totalClientes).toFixed(2);
+						
+            $("#visitados").html(visitados);
+			if( porcentajeVisitados <= 30){ $("#visitados-label").html(iconoD);
+			}else{ $("#visitados-label").html(iconoU); }			
+			$("#visitados-label").append("  "+porcentajeVisitados+"%");			
+            $("#visitados-sidebar").css("width", porcentajeVisitados + "%");
 
+            $("#no-visitados").html(noVisitados);
+			if( porcentajeNoVisitados <= 30){ $("#no-visitados-label").html(iconoD);
+			}else{ $("#no-visitados-label").html(iconoU); }			
+			$("#no-visitados-label").append("  "+porcentajeNoVisitados+"%");
+            $("#no-visitados-sidebar").css("width", porcentajeNoVisitados + "%");
+			
+
+        }
     </script>
 
 @stop

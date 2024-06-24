@@ -6,22 +6,40 @@
  * Time: 07:06
  */
 namespace App\Models;
-use Illuminate\Database\Eloquent\Model;
-class Usuario extends Model
+use DB;
+
+class Usuario extends BaseModel
 {
+    public $table = 'Web_Usuario';
 
-    public $table = 'Usuario';
+    public $timestamps = true;
 
-    public $timestamps = false;
     protected $primaryKey = 'idUsuario';
 
+    public $fillable = [ 'idPerfil','idEmpresa' ,'nombre', 'idSucursal', 'deleted' ];
 
-    public $fillable = [  'idEmpresa'  ]; 
-	
-	protected $hidden = array('usuario, clave');
-	
-	public function getEmpresa()
+    protected $hidden = array('usuario, clave');
+
+    protected $casts = [ 'idEmpresa' => 'string' ,  'idSucursal' => 'string'];
+
+    public function getEmpresa()
     {
         return $this->belongsTo('App\Models\Empresa', 'idEmpresa', 'idEmpresa');
     }
+
+    public function getSucursal()
+    {
+        return $this->belongsTo('App\Models\Sucursal', 'idSucursal', 'idSucursal');
+    }
+
+    public function perfil()
+    {
+        return $this->belongsTo('App\Models\Perfil', 'idPerfil');
+    }
+
+    public function scopeEliminated($query)
+    {
+        return $query->where('deleted',0);
+    }
+
 }

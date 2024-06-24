@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Lima',
 
     /*
     |--------------------------------------------------------------------------
@@ -166,7 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Collective\Html\HtmlServiceProvider::class,
         //
 
         /*
@@ -177,19 +177,20 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-		
-		/***/
-		App\Providers\CustomAuthServiceProvider::class,
-		
-		/*
-		* Laravelcollective...
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
+        App\Providers\CustomAuthProvider::class,
+
+        \InfyOm\GeneratorBuilder\GeneratorBuilderServiceProvider::class,
+
+
+        /*
+		*DataTables
 		*/
-		Collective\Html\HtmlServiceProvider::class,
-		
-		/*
-		* Easy Flash...
-		*/
-		Laracasts\Flash\FlashServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Prettus\Repository\Providers\RepositoryServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
+
     ],
 
     /*
@@ -238,9 +239,13 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-		'Form' => Collective\Html\FormFacade::class,
-		'Html' => Collective\Html\HtmlFacade::class,
-		
+        'Flash' => Laracasts\Flash\Flash::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        'Datatables' => Yajra\Datatables\Datatables::class,
+
     ],
 
 ];

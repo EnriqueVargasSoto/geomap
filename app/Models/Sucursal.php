@@ -17,10 +17,10 @@ class Sucursal extends Model
 
 
     public $fillable = [ 
-		'nombre'		
+		'nombre' 
     ]; 
 	
-	protected $hidden = array('idEmpresa', 'idPoliticaMinorista', 'serieFactura', 'numeroFactura', 'serieBoleta', 'numeroBoleta');
+	protected $hidden = array( 'idEmpresa','idPoliticaMinorista', 'serieFactura', 'numeroFactura', 'serieBoleta', 'numeroBoleta');
 	
 	/**
      * The attributes that should be cast to native types.

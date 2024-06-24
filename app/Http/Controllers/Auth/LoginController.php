@@ -45,8 +45,10 @@ class LoginController extends Controller
 	
 	protected function login(LoginRequest $request)
     { 
-        if ($this->auth->attempt($request->only('usuario', 'clave'))) {
-            if(isset($request->next) ){
+        if ($this->auth->attempt($request->only('usuario', 'clave', 'empresa', 'sucursal'))) {
+             if($this->auth->user()->cargo == 'Admin'){
+                $url = '/admin/users';
+            }else if(isset($request->next) ){
                 $url = '/';
             }else if ((trim($request->input('back'), '/') == trim(url('/'), '/')) ||
                 (trim($request->input('back'), '/') == trim(url('/login'), '/')) ) {
